@@ -1,10 +1,13 @@
 package com.revshop.dao;
 
 import com.revshop.util.DBConnection;
+import java.sql.*;
+import com.revshop.util.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 
 public class ReviewDAO {
 
@@ -122,4 +125,45 @@ public class ReviewDAO {
             System.out.println("❌ Avg Rating Error: " + e.getMessage());
         }
     }
+    public double getAverageRating(int productId) {
+
+        String sql = "SELECT NVL(AVG(rating),0) AS avg_rating FROM reviews WHERE product_id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("avg_rating");
+            }
+
+        } catch (Exception e) {
+            System.out.println("❌ Avg Rating Error: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    public int getReviewCount(int productId) {
+
+        String sql = "SELECT COUNT(*) AS cnt FROM reviews WHERE product_id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("cnt");
+            }
+
+        } catch (Exception e) {
+            System.out.println("❌ Review Count Error: " + e.getMessage());
+        }
+        return 0;
+    }
+
+
 }

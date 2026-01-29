@@ -249,4 +249,36 @@ public class ProductDAO {
             return false;
         }
     }
+    public List<Product> viewProductsBySeller(int sellerId) {
+
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM products WHERE seller_id=? ORDER BY product_id DESC";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, sellerId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductId(rs.getInt("product_id"));
+                p.setSellerId(rs.getInt("seller_id"));
+                p.setCategoryId(rs.getInt("category_id"));
+                p.setProductName(rs.getString("product_name"));
+                p.setDescription(rs.getString("description"));
+                p.setMrp(rs.getDouble("mrp"));
+                p.setDiscountedPrice(rs.getDouble("discounted_price"));
+                p.setStock(rs.getInt("stock"));
+                p.setThresholdStock(rs.getInt("threshold_stock"));
+                list.add(p);
+            }
+
+        } catch (Exception e) {
+            System.out.println("❌ View Seller Products Error: " + e.getMessage());
+        }
+
+        return list;
+    }
+
 }

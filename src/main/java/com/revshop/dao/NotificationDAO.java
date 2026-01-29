@@ -11,7 +11,7 @@ public class NotificationDAO {
     // ✅ View notifications
     public void viewNotifications(int userId) {
         String sql = "SELECT notification_id, message, is_read, created_at " +
-                "FROM notifications WHERE user_id=? ORDER BY notification_id DESC";
+                "FROM notifications WHERE user_id=? AND is_read='N' ORDER BY notification_id DESC";
 
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

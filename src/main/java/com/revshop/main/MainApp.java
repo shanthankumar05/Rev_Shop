@@ -10,7 +10,7 @@ import com.revshop.service.OrderService;
 import java.util.Scanner;
 import com.revshop.service.ReviewService;
 import com.revshop.service.FavoritesService;
-
+import com.revshop.dao.ReviewDAO;
 public class MainApp {
 
     public static void main(String[] args) {
@@ -189,17 +189,24 @@ public class MainApp {
                         System.out.println("⚠ No products available.");
                     } else {
                         System.out.println("\n--- Products ---");
-                        for (var p : products) {
-                            System.out.println(
-                                    "ID: " + p.getProductId() +
-                                            " | Name: " + p.getProductName() +
-                                            " | Price: " + p.getDiscountedPrice() +
-                                            " | Stock: " + p.getStock()
-                            );
+
+                        for (Product p : products) {
+
+                            // ✅ get rating + review count for each product
+                            double avg = reviewService.getAverageRating(p.getProductId());
+                            int cnt = reviewService.getReviewCount(p.getProductId());
+                            System.out.println("MRP: " + p.getMrp() + " | Price: " + p.getDiscountedPrice());
+
+                            System.out.println("ID: " + p.getProductId()
+                                    + " | Name: " + p.getProductName()
+//                                    + " | Price: " + p.getDiscountedPrice()
+
+                                    +" | MRP: " + p.getMrp() + " | Discount Price: " + p.getDiscountedPrice()
+                                    + " | Stock: " + p.getStock()
+                                    + " | ⭐ " + String.format("%.1f", avg) + " (" + cnt + " reviews)");
                         }
                     }
                 }
-
                 case 2 -> {
                     System.out.print("Enter keyword: ");
                     String keyword = sc.nextLine();
@@ -313,11 +320,34 @@ public class MainApp {
 
                     System.out.print("Billing Address: ");
                     String bill = sc.nextLine();
+                    System.out.println("\nSelect Payment Method:");
+                    System.out.println("1. COD");
+                    System.out.println("2. UPI");
+                    System.out.println("3. CARD");
+                    System.out.print("Choose: ");
+                    int payChoice = sc.nextInt();
+//                    sc.nextLine();
 
-                    System.out.print("Payment Method (COD/UPI/CARD): ");
-                    String pay = sc.nextLine().toUpperCase();
+                    String paymentMethod = "";
 
-                    boolean ok = orderService.checkout(user.getUserId(), ship, bill, pay);
+                    if (payChoice == 1) {
+                        paymentMethod = "COD";
+                    } else if (payChoice == 2) {
+                        System.out.print("Enter UPI ID (example: name@upi): ");
+                        String upiId = sc.nextLine();
+                        paymentMethod = "UPI (" + upiId + ")";
+                    } else if (payChoice == 3) {
+                        System.out.print("Enter Card Last 4 Digits: ");
+                        String last4 = sc.nextLine();
+                        paymentMethod = "CARD (****" + last4 + ")";
+                    } else {
+                        System.out.println("❌ Invalid payment option! Defaulting to COD");
+                        paymentMethod = "COD";
+                    }
+//                    System.out.print("Payment Method (COD/UPI/CARD): ");
+//                    String pay = sc.nextLine().toUpperCase();
+
+                    boolean ok = orderService.checkout(user.getUserId(), ship, bill, paymentMethod);
                     System.out.println(ok ? "✅ Checkout Done!" : "❌ Checkout Failed!");
                 }
 
@@ -329,6 +359,15 @@ public class MainApp {
                 // ✅ Buyer notifications
                 case 10 -> {
                     notificationService.viewNotifications(user.getUserId());
+                    System.out.print("Enter Notification ID to mark as read: ");
+                    int nid = sc.nextInt();
+                    sc.nextLine();
+
+                    boolean ok = notificationService.markRead(nid, user.getUserId());
+
+                    if (ok) System.out.println("✅ Notification marked as read!");
+                    else System.out.println("❌ Invalid Notification ID!");
+
                 }
                 case 11 -> {
                     System.out.print("Enter Product ID to Review: ");
@@ -408,7 +447,7 @@ public class MainApp {
         while (true) {
             System.out.println("\n===== SELLER MENU =====");
             System.out.println("1. Add Product");
-            System.out.println("2. View All Products (for checking)");
+            System.out.println("2. View My Products");
             System.out.println("3. Update Stock");
             System.out.println("4. Update Price");
             System.out.println("5. Delete Product");
@@ -458,7 +497,8 @@ public class MainApp {
                 }
 
                 case 2 -> {
-                    var products = productService.viewAllProducts();
+                    var products = productService.viewSellerProducts(user.getUserId());
+
 
                     if (products.isEmpty()) {
                         System.out.println("⚠ No products available.");
@@ -519,6 +559,14 @@ public class MainApp {
                 // ✅ Seller notifications
                 case 7 -> {
                     notificationService.viewNotifications(user.getUserId());
+                    System.out.print("Enter Notification ID to mark as read: ");
+                    int nid = sc.nextInt();
+                    sc.nextLine();
+
+                    boolean ok = notificationService.markRead(nid, user.getUserId());
+
+                    if (ok) System.out.println("✅ Notification marked as read!");
+                    else System.out.println("❌ Invalid Notification ID!");
                 }
                 case 8 -> {
                     reviewService.viewSellerProductReviews(user.getUserId());

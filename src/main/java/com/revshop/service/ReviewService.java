@@ -18,4 +18,12 @@ public class ReviewService {
     public void viewSellerProductReviews(int sellerId) {
         reviewDAO.viewReviewsForSeller(sellerId);
     }
+    public double getAverageRating(int productId) {
+        return reviewDAO.getAverageRating(productId);
+    }
+
+    public int getReviewCount(int productId) {
+        return reviewDAO.getReviewCount(productId);
+    }
+
 }
