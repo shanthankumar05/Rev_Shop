@@ -14,26 +14,89 @@ public class OrderItem {
     // extra display
     private String productName;
 
-    public OrderItem() {}
+    public OrderItem() {
+    }
 
-    public int getOrderItemId() { return orderItemId; }
-    public void setOrderItemId(int orderItemId) { this.orderItemId = orderItemId; }
+    // ================= Getters & Setters =================
 
-    public int getOrderId() { return orderId; }
-    public void setOrderId(int orderId) { this.orderId = orderId; }
+    public int getOrderItemId() {
+        return orderItemId;
+    }
 
-    public int getProductId() { return productId; }
-    public void setProductId(int productId) { this.productId = productId; }
+    public void setOrderItemId(int orderItemId) {
+        this.orderItemId = orderItemId;
+    }
 
-    public int getSellerId() { return sellerId; }
-    public void setSellerId(int sellerId) { this.sellerId = sellerId; }
+    public int getOrderId() {
+        return orderId;
+    }
 
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public int getProductId() {
+        return productId;
+    }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    // ================= Utility Methods =================
+
+    /**
+     * Calculate subtotal for this order item
+     */
+    public double getSubTotal() {
+        return price * quantity;
+    }
+
+    /**
+     * Safe toString() for logging/debugging
+     */
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "orderItemId=" + orderItemId +
+                ", orderId=" + orderId +
+                ", productId=" + productId +
+                ", sellerId=" + sellerId +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

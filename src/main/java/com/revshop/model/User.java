@@ -17,31 +17,110 @@ public class User {
     public User() {
     }
 
-    // Getters & Setters
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    // ================= Getters & Setters =================
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public int getUserId() {
+        return userId;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getName() {
+        return name;
+    }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getBusinessName() { return businessName; }
-    public void setBusinessName(String businessName) { this.businessName = businessName; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getSecurityQuestion() { return securityQuestion; }
-    public void setSecurityQuestion(String securityQuestion) { this.securityQuestion = securityQuestion; }
+    /**
+     * ⚠ Password should never be logged or printed
+     */
+    public String getPassword() {
+        return password;
+    }
 
-    public String getSecurityAnswer() { return securityAnswer; }
-    public void setSecurityAnswer(String securityAnswer) { this.securityAnswer = securityAnswer; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    /**
+     * ⚠ Security answer should never be logged or printed
+     */
+    public String getSecurityAnswer() {
+        return securityAnswer;
+    }
+
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
+    }
+
+    // ================= Utility Methods =================
+
+    /**
+     * Safe toString() for logging/debugging
+     * (No password / security answer exposed)
+     */
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", businessName='" + businessName + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
+    // Optional helpers (non-breaking)
+    public boolean isBuyer() {
+        return "BUYER".equalsIgnoreCase(role);
+    }
+
+    public boolean isSeller() {
+        return "SELLER".equalsIgnoreCase(role);
+    }
 }

@@ -15,33 +15,109 @@ public class Product {
     private int stock;
     private int thresholdStock;
 
-    public Product() {}
+    public Product() {
+    }
 
-    // Getters & Setters
-    public int getProductId() { return productId; }
-    public void setProductId(int productId) { this.productId = productId; }
+    // ================= Getters & Setters =================
 
-    public int getSellerId() { return sellerId; }
-    public void setSellerId(int sellerId) { this.sellerId = sellerId; }
+    public int getProductId() {
+        return productId;
+    }
 
-    public int getCategoryId() { return categoryId; }
-    public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public int getSellerId() {
+        return sellerId;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
+    }
 
-    public double getMrp() { return mrp; }
-    public void setMrp(double mrp) { this.mrp = mrp; }
+    public int getCategoryId() {
+        return categoryId;
+    }
 
-    public double getDiscountedPrice() { return discountedPrice; }
-    public void setDiscountedPrice(double discountedPrice) { this.discountedPrice = discountedPrice; }
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
 
-    public int getStock() { return stock; }
-    public void setStock(int stock) { this.stock = stock; }
+    public String getProductName() {
+        return productName;
+    }
 
-    public int getThresholdStock() { return thresholdStock; }
-    public void setThresholdStock(int thresholdStock) { this.thresholdStock = thresholdStock; }
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getMrp() {
+        return mrp;
+    }
+
+    public void setMrp(double mrp) {
+        this.mrp = mrp;
+    }
+
+    public double getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(double discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getThresholdStock() {
+        return thresholdStock;
+    }
+
+    public void setThresholdStock(int thresholdStock) {
+        this.thresholdStock = thresholdStock;
+    }
+
+    // ================= Utility Methods =================
+
+    /**
+     * Safe toString() for logging/debugging
+     * (No sensitive data)
+     */
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", sellerId=" + sellerId +
+                ", categoryId=" + categoryId +
+                ", productName='" + productName + '\'' +
+                ", mrp=" + mrp +
+                ", discountedPrice=" + discountedPrice +
+                ", stock=" + stock +
+                ", thresholdStock=" + thresholdStock +
+                '}';
+    }
+
+    // Optional helpers (non-breaking)
+    public boolean isLowStock() {
+        return stock <= thresholdStock;
+    }
+
+    public double getDiscountAmount() {
+        return mrp - discountedPrice;
+    }
 }

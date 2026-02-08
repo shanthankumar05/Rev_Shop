@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+
     <Appenders>
 
+        <!-- USER CONSOLE (ONLY WARN & ERROR) -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %c{1} - %msg%n"/>
+            <PatternLayout
+                    pattern="%d{HH:mm:ss} %-5level %c{1} - %msg%n"/>
         </Console>
 
-        <File name="FileLogger" fileName="logs/revshop.log" append="true">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %c{1} - %msg%n"/>
+        <!-- FULL DEBUG FILE -->
+        <File name="FileLogger"
+              fileName="logs/revshop.log"
+              append="true">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %c - %msg%n"/>
         </File>
 
     </Appenders>
 
     <Loggers>
-        <Root level="info">
+
+        <!-- APPLICATION LOGS -->
+        <Logger name="com.revshop"
+                level="debug"
+                additivity="false">
+            <AppenderRef ref="FileLogger"/>
+        </Logger>
+
+        <!-- JDBC NOISE REDUCTION -->
+        <Logger name="java.sql" level="warn"/>
+        <Logger name="oracle.jdbc" level="warn"/>
+
+        <!-- ROOT -->
+        <Root level="warn">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="FileLogger"/>
         </Root>
+
     </Loggers>
+
 </Configuration>

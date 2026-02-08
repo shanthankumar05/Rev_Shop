@@ -8,20 +8,73 @@ public class Review {
     private int rating;
     private String reviewComment;
 
-    public Review() {}
+    public Review() {
+    }
 
-    public int getReviewId() { return reviewId; }
-    public void setReviewId(int reviewId) { this.reviewId = reviewId; }
+    // ================= Getters & Setters =================
 
-    public int getProductId() { return productId; }
-    public void setProductId(int productId) { this.productId = productId; }
+    public int getReviewId() {
+        return reviewId;
+    }
 
-    public int getBuyerId() { return buyerId; }
-    public void setBuyerId(int buyerId) { this.buyerId = buyerId; }
+    public void setReviewId(int reviewId) {
+        this.reviewId = reviewId;
+    }
 
-    public int getRating() { return rating; }
-    public void setRating(int rating) { this.rating = rating; }
+    public int getProductId() {
+        return productId;
+    }
 
-    public String getReviewComment() { return reviewComment; }
-    public void setReviewComment(String reviewComment) { this.reviewComment = reviewComment; }
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerId(int buyerId) {
+        this.buyerId = buyerId;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getReviewComment() {
+        return reviewComment;
+    }
+
+    public void setReviewComment(String reviewComment) {
+        this.reviewComment = reviewComment;
+    }
+
+    // ================= Utility Methods =================
+
+    /**
+     * Check if rating is positive
+     * (helper only, does NOT enforce validation)
+     */
+    public boolean hasValidRating() {
+        return rating >= 1 && rating <= 5;
+    }
+
+    /**
+     * Safe toString() for logging/debugging
+     * (No sensitive data)
+     */
+    @Override
+    public String toString() {
+        return "Review{" +
+                "reviewId=" + reviewId +
+                ", productId=" + productId +
+                ", buyerId=" + buyerId +
+                ", rating=" + rating +
+                ", reviewComment='" + reviewComment + '\'' +
+                '}';
+    }
 }

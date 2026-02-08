@@ -11,31 +11,35 @@ public class ProductServiceTest {
     ProductService productService = new ProductService();
 
     @Test
-    void testAddProduct() {
+    void testAddProductAndVerify() {
+
+        String name = "JUnit Product " + System.currentTimeMillis();
+
         Product p = new Product();
-
-        // ✅ use a valid SELLER user_id from your USERS table
         p.setSellerId(2);
-
-        // ✅ use valid category_id from CATEGORIES
         p.setCategoryId(1);
-
-        p.setProductName("JUnit Product " + System.currentTimeMillis());
+        p.setProductName(name);
         p.setDescription("Test product for JUnit");
-
         p.setMrp(1000);
         p.setDiscountedPrice(900);
-
         p.setStock(10);
         p.setThresholdStock(5);
 
         boolean added = productService.addProduct(p);
-        assertTrue(added);
-    }
+        assertTrue(added, "Product should be added successfully");
 
+        // ✅ VERIFY FROM DB
+        var results = productService.searchProducts(name);
+
+        assertFalse(results.isEmpty(), "Product must exist in DB after insert");
+    }
     @Test
     void testSearchProduct() {
+
         var list = productService.searchProducts("phone");
-        assertNotNull(list);
+
+        assertNotNull(list, "Search result should not be null");
+        assertTrue(list.size() > 0, "Search should return at least one product");
     }
+
 }

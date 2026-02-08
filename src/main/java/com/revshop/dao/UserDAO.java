@@ -29,23 +29,23 @@ public class UserDAO {
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getRole());
-            ps.setString(5, user.getBusinessName()); // null allowed
-            ps.setString(6, user.getPhone());        // null allowed
+            ps.setString(5, user.getBusinessName());
+            ps.setString(6, user.getPhone());
             ps.setString(7, user.getSecurityQuestion());
             ps.setString(8, user.getSecurityAnswer());
 
             int rows = ps.executeUpdate();
 
             if (rows > 0) {
-                logger.info("User registered successfully: {}", user.getEmail());
+                logger.info("User registered successfully email={}", user.getEmail());
                 return true;
             } else {
-                logger.warn("User registration failed (0 rows affected): {}", user.getEmail());
+                logger.warn("User registration failed (0 rows) email={}", user.getEmail());
                 return false;
             }
 
         } catch (Exception e) {
-            logger.error("Register Error for email={} : {}", user.getEmail(), e.getMessage());
+            logger.error("Register error email={}", user.getEmail(), e);
             return false;
         }
     }
@@ -58,7 +58,7 @@ public class UserDAO {
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            logger.info("Login attempt for email={}", email);
+            logger.info("Login attempt email={}", email);
 
             ps.setString(1, email);
             ps.setString(2, password);
@@ -74,20 +74,20 @@ public class UserDAO {
                 user.setBusinessName(rs.getString("business_name"));
                 user.setPhone(rs.getString("phone"));
 
-                logger.info("Login success for email={} role={}", email, user.getRole());
+                logger.info("Login success email={} role={}", email, user.getRole());
                 return user;
             }
 
-            logger.warn("Login failed: invalid email/password for email={}", email);
+            logger.warn("Login failed email={}", email);
             return null;
 
         } catch (Exception e) {
-            logger.error("Login Error for email={} : {}", email, e.getMessage());
+            logger.error("Login error email={}", email, e);
             return null;
         }
     }
 
-    // ✅ Get Security Question by Email
+    // ✅ Get Security Question
     public String getSecurityQuestionByEmail(String email) {
 
         String sql = "SELECT security_question FROM users WHERE email=?";
@@ -95,7 +95,7 @@ public class UserDAO {
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            logger.info("Fetching security question for email={}", email);
+            logger.info("Fetching security question email={}", email);
 
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -104,16 +104,16 @@ public class UserDAO {
                 return rs.getString("security_question");
             }
 
-            logger.warn("Security question not found for email={}", email);
+            logger.warn("Security question not found email={}", email);
             return null;
 
         } catch (Exception e) {
-            logger.error("Error fetching security question for email={} : {}", email, e.getMessage());
+            logger.error("Fetch security question error email={}", email, e);
             return null;
         }
     }
 
-    // ✅ Reset Password using Email + Security Answer
+    // ✅ Reset Password
     public boolean resetPassword(String email, String securityAnswer, String newPassword) {
 
         String sql = "UPDATE users SET password=? WHERE email=? AND security_answer=?";
@@ -121,7 +121,7 @@ public class UserDAO {
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            logger.info("Reset password attempt for email={}", email);
+            logger.info("Reset password attempt email={}", email);
 
             ps.setString(1, newPassword);
             ps.setString(2, email);
@@ -130,20 +130,20 @@ public class UserDAO {
             int rows = ps.executeUpdate();
 
             if (rows > 0) {
-                logger.info("Password reset success for email={}", email);
+                logger.info("Password reset success email={}", email);
                 return true;
             } else {
-                logger.warn("Password reset failed (wrong security answer) for email={}", email);
+                logger.warn("Password reset failed email={}", email);
                 return false;
             }
 
         } catch (Exception e) {
-            logger.error("Error resetting password for email={} : {}", email, e.getMessage());
+            logger.error("Reset password error email={}", email, e);
             return false;
         }
     }
 
-    // ✅ Change Password (Logged in user)
+    // ✅ Change Password
     public boolean changePassword(int userId, String oldPassword, String newPassword) {
 
         String sql = "UPDATE users SET password=? WHERE user_id=? AND password=?";
@@ -151,7 +151,7 @@ public class UserDAO {
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            logger.info("Change password attempt for userId={}", userId);
+            logger.info("Change password attempt userId={}", userId);
 
             ps.setString(1, newPassword);
             ps.setInt(2, userId);
@@ -160,15 +160,15 @@ public class UserDAO {
             int rows = ps.executeUpdate();
 
             if (rows > 0) {
-                logger.info("Password changed successfully for userId={}", userId);
+                logger.info("Password changed userId={}", userId);
                 return true;
             } else {
-                logger.warn("Password change failed (wrong old password) for userId={}", userId);
+                logger.warn("Password change failed userId={}", userId);
                 return false;
             }
 
         } catch (Exception e) {
-            logger.error("Error changing password for userId={} : {}", userId, e.getMessage());
+            logger.error("Change password error userId={}", userId, e);
             return false;
         }
     }
