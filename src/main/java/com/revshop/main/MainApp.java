@@ -226,6 +226,7 @@ public class MainApp {
                                 System.out.println(
                                         "ID: " + p.getProductId() +
                                                 " | Name: " + p.getProductName() +
+                                                " | Description: " + p.getDescription() +
                                                 " | MRP: " + p.getMrp() +
                                                 " | *Discount Price*: " + p.getDiscountedPrice() +
                                                 " | Stock: " + p.getStock() +
@@ -247,6 +248,7 @@ public class MainApp {
                                     System.out.println(
                                             "ID: " + p.getProductId() +
                                                     " | Name: " + p.getProductName() +
+                                                    " | Description: " + p.getDescription() +
                                                     " | MRP: " + p.getMrp() +
                                                     " | *Discount Price*: " + p.getDiscountedPrice() +
                                                     " | Stock: " + p.getStock()
@@ -272,6 +274,7 @@ public class MainApp {
                                     System.out.println(
                                             "ID: " + p.getProductId() +
                                                     " | Name: " + p.getProductName() +
+                                                    " | Description: " + p.getDescription() +
                                                     " | MRP: " + p.getMrp() +
                                                     " | *Discount Price*: " + p.getDiscountedPrice() +
                                                     " | Stock: " + p.getStock()
@@ -550,6 +553,8 @@ public class MainApp {
                                 System.out.println(
                                         "ID: " + p.getProductId() +
                                                 " | Name: " + p.getProductName() +
+                                                " | MRP: " + p.getMrp() +
+                                                " | *Discount Price*: " + p.getDiscountedPrice() +
                                                 " | Stock: " + p.getStock() +
                                                 " | Threshold: " + p.getThresholdStock() +
                                                 alert
@@ -625,7 +630,7 @@ public class MainApp {
                     case 8 -> {
                         logger.info("Seller {} viewing product reviews", user.getUserId());
 
-                        System.out.println("\n===== REVIEWS FOR YOUR PRODUCTS =====");
+//                        System.out.println("\n===== REVIEWS FOR YOUR PRODUCTS =====");
                         reviewService.viewSellerProductReviews(user.getUserId());
                         System.out.println("===== END OF REVIEWS =====");
                     }
@@ -665,23 +670,34 @@ public class MainApp {
 
     private static String getSecurityQuestion(Scanner sc) {
 
-        System.out.println("\nChoose Security Question:");
-        System.out.println("1. What is your pet name?");
-        System.out.println("2. What is your first school name?");
-        System.out.println("3. What is your favourite food?");
-        System.out.println("4. What is your birthplace?");
-        System.out.println("5. What is your best friend name?");
-        System.out.print("Enter choice (1-5): ");
+        while (true) {
+            System.out.println("\nChoose Security Question:");
+            System.out.println("1. What is your pet name?");
+            System.out.println("2. What is your first school name?");
+            System.out.println("3. What is your favourite food?");
+            System.out.println("4. What is your birthplace?");
+            System.out.println("5. What is your best friend name?");
+            System.out.print("Enter choice (1-5): ");
 
-        int qChoice = safeInt(sc);
+            // ✅ Validate integer input
+            if (!sc.hasNextInt()) {
+                System.out.println("❌ Invalid input! Please enter a number (1-5).");
+                sc.nextLine(); // clear invalid input
+                continue;
+            }
 
-        return switch (qChoice) {
-            case 1 -> "What is your pet name?";
-            case 2 -> "What is your first school name?";
-            case 3 -> "What is your favourite food?";
-            case 4 -> "What is your birthplace?";
-            case 5 -> "What is your best friend name?";
-            default -> "What is your pet name?";
-        };
+            int choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1: return "What is your pet name?";
+                case 2: return "What is your first school name?";
+                case 3: return "What is your favourite food?";
+                case 4: return "What is your birthplace?";
+                case 5: return "What is your best friend name?";
+                default:
+                    System.out.println("❌ Invalid choice! Please select between 1 and 5.");
+            }
+        }
     }
 }

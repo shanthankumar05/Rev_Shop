@@ -70,7 +70,7 @@ public class ReviewDAO {
     // ✅ Seller can view reviews of their products
     public void viewReviewsForSeller(int sellerId) {
 
-        String sql = "SELECT p.product_id, p.product_name, r.rating, r.review_comment, r.created_at " +
+        String sql = "SELECT p.product_id, p.product_name,r.buyer_id, r.rating, r.review_comment, r.created_at " +
                 "FROM reviews r " +
                 "JOIN products p ON r.product_id = p.product_id " +
                 "WHERE p.seller_id=? " +
@@ -90,6 +90,7 @@ public class ReviewDAO {
                 System.out.println(
                         "Product ID: " + rs.getInt("product_id") +
                                 " | Name: " + rs.getString("product_name") +
+                                " | Buyer ID: " + rs.getInt("buyer_id") +
                                 " | Rating: " + rs.getInt("rating") +
                                 " | Comment: " + rs.getString("review_comment") +
                                 " | Date: " + rs.getTimestamp("created_at")

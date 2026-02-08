@@ -218,7 +218,8 @@ public class OrderDAO {
     // ✅ Seller Orders
     public void viewSellerOrders(int sellerId) {
 
-        String sql = "SELECT oi.order_id, oi.product_id, oi.quantity, oi.price, o.buyer_id, o.created_at " +
+        String sql = "SELECT oi.order_id, oi.product_id, oi.quantity, oi.price, o.buyer_id,o.shipping_address,"+
+                "o.payment_method, + o.created_at " +
                 "FROM order_items oi " +
                 "JOIN orders o ON oi.order_id = o.order_id " +
                 "WHERE oi.seller_id=? " +
@@ -240,6 +241,8 @@ public class OrderDAO {
                         + " | Qty: " + rs.getInt("quantity")
                         + " | Price: " + rs.getDouble("price")
                         + " | Buyer ID: " + rs.getInt("buyer_id")
+                        + " | Shipping Address: " + rs.getString("shipping_address")
+                        + " | Payment Method: " + rs.getString("payment_method")
                         + " | Date: " + rs.getTimestamp("created_at"));
             }
 
