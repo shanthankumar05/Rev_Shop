@@ -30,6 +30,7 @@ It supports product browsing, cart management, order placement, reviews, favorit
 - Add reviews & ratings
 - Add to favorites / View favorites / Remove favorites
 - View notifications
+- Change password
 
 ### ✅ Seller Features
 - Register & Login
@@ -44,14 +45,14 @@ It supports product browsing, cart management, order placement, reviews, favorit
 
 ### ✅ Common Features
 - Change password
-- Forgot password / Reset
+- Forgot password / Reset using security question
 - Logout
 
 ---
 
 ## ✅ Project Architecture (Layered)
 - Presentation Layer: `MainApp` (Console UI)
-- Service Layer: Business Logic
+- Service Layer: Business Logic & validation
 - DAO Layer: Database Operations (JDBC)
 - Utility Layer: `DBConnection`
 - Database Layer: Oracle DB (REVSHOP schema)
@@ -145,6 +146,13 @@ Load Maven dependencies (pom.xml)
 
 Run:
 com.revshop.main.MainApp
+✅ Logging
+
+Console: WARN & ERROR
+
+File: DEBUG logs (logs/revshop.log)
+
+Logs include authentication, checkout, validation, and DB activity
 
 ✅ How to Run JUnit Tests
 
